@@ -18,6 +18,8 @@
 		42671F821BB130D0005A7D7A /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42671F811BB130D0005A7D7A /* Friend.swift */; settings = {ASSET_TAGS = (); }; };
 		42671F841BB13190005A7D7A /* StringResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42671F831BB13190005A7D7A /* StringResources.swift */; settings = {ASSET_TAGS = (); }; };
 		42671F861BB135B7005A7D7A /* FriendDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42671F851BB135B7005A7D7A /* FriendDetailController.swift */; settings = {ASSET_TAGS = (); }; };
+		42671F881BB153F9005A7D7A /* CoreDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42671F871BB153F9005A7D7A /* CoreDataHelper.swift */; settings = {ASSET_TAGS = (); }; };
+		42671F8A1BB16458005A7D7A /* GeneralHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42671F891BB16458005A7D7A /* GeneralHelper.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		42671F811BB130D0005A7D7A /* Friend.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		42671F831BB13190005A7D7A /* StringResources.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringResources.swift; sourceTree = "<group>"; };
 		42671F851BB135B7005A7D7A /* FriendDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendDetailController.swift; sourceTree = "<group>"; };
+		42671F871BB153F9005A7D7A /* CoreDataHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataHelper.swift; sourceTree = "<group>"; };
+		42671F891BB16458005A7D7A /* GeneralHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +177,8 @@
 				42671F491BB116E0005A7D7A /* AppDelegate.swift */,
 				42671F581BB116E0005A7D7A /* Info.plist */,
 				42671F501BB116E0005A7D7A /* FriendBooks.xcdatamodeld */,
+				42671F871BB153F9005A7D7A /* CoreDataHelper.swift */,
+				42671F891BB16458005A7D7A /* GeneralHelper.swift */,
 			);
 			name = Others;
 			sourceTree = "<group>";
@@ -313,8 +319,10 @@
 				42671F841BB13190005A7D7A /* StringResources.swift in Sources */,
 				42671F801BB130B2005A7D7A /* FriendListController.swift in Sources */,
 				42671F861BB135B7005A7D7A /* FriendDetailController.swift in Sources */,
+				42671F881BB153F9005A7D7A /* CoreDataHelper.swift in Sources */,
 				42671F821BB130D0005A7D7A /* Friend.swift in Sources */,
 				42671F4A1BB116E0005A7D7A /* AppDelegate.swift in Sources */,
+				42671F8A1BB16458005A7D7A /* GeneralHelper.swift in Sources */,
 				42671F521BB116E0005A7D7A /* FriendBooks.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

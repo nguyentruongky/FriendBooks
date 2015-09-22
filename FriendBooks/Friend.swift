@@ -10,10 +10,14 @@ import Foundation
 
 class Friend {
     
+    var friendID = 0
+    
     var name = ""
     var email = ""
     var phone = ""
     
     var avatar = ""
     var cover = ""
+    
+    
 }

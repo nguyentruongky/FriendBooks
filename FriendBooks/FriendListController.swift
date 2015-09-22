@@ -10,7 +10,8 @@ import UIKit
 
 class FriendListController: UITableViewController, FriendDetailDelegate {
 
-    var friends = [Friend]()
+//    var friends = [Friend]()
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     var editedFriendIndex = -1
     
@@ -19,6 +20,8 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        appDelegate.friends = CoreDataHelper.getFriendsFromCoreData()
+//        appDelegate.lastestID = GeneralHelper.getLastestFriendID(appDelegate.friends)
      }
 
     override func didReceiveMemoryWarning() {
@@ -35,30 +38,31 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        return friends.count
+        return appDelegate.friends.count
     }
 
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(StringResources.FriendCell, forIndexPath: indexPath)
 
-        cell.textLabel?.text = friends[indexPath.row].name
+        cell.textLabel?.text = appDelegate.friends[indexPath.row].name
 
         return cell
     }
 
     func addNewFriend(controller: FriendDetailController, friend: Friend) {
         
-        friends.append(friend)
+        appDelegate.friends.append(friend)
         
-        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: friends.count - 1, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+        tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
+//        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: appDelegate.friends.count - 1, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
         
         dismissViewControllerAnimated(true, completion: nil)
     }
     
     func saveEdit(controller: FriendDetailController, friend: Friend) {
         
-        friends[editedFriendIndex] = friend
+        appDelegate.friends[editedFriendIndex] = friend
 
         tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: editedFriendIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
         
@@ -67,6 +71,11 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
         editedFriendIndex = -1
     }
 
+    func getFriends() {
+        
+        
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -116,7 +125,7 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
             
             editedFriendIndex = (tableView.indexPathForSelectedRow?.row)!
             controller.mode = Mode.View
-            controller.friend = friends[editedFriendIndex]
+            controller.friend = appDelegate.friends[editedFriendIndex]
         }
     }
 
