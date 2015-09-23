@@ -20,9 +20,18 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        appDelegate.friends = CoreDataHelper.getFriendsFromCoreData()
-//        appDelegate.lastestID = GeneralHelper.getLastestFriendID(appDelegate.friends)
-     }
+        appDelegate.friends = CoreDataHelper.getFriendsFromCoreData()
+        
+        if appDelegate.friends.count == 0 {
+            
+            appDelegate.lastestID = 0
+        }
+        else {
+            
+            appDelegate.lastestID = appDelegate.friends[appDelegate.friends.count - 1].friendID + 1
+        }
+
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -55,7 +64,9 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
         appDelegate.friends.append(friend)
         
         tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
-//        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: appDelegate.friends.count - 1, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
+        
+        CoreDataHelper.addNewFriends([friend])
+//        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: appDelegate.friends.count, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
         
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -68,6 +79,8 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
         
         dismissViewControllerAnimated(true, completion: nil)
 
+        CoreDataHelper.updateFriendInfo(friend)
+        
         editedFriendIndex = -1
     }
 
@@ -84,17 +97,22 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
     }
     */
 
-    /*
+
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            // Delete the row from the data source
+            
+            let friend = appDelegate.friends[indexPath.row]
+            CoreDataHelper.removeFriend(friend)
+
+            appDelegate.friends.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
+//        else if editingStyle == .Insert {
+//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+//        }    
     }
-    */
+
 
     /*
     // Override to support rearranging the table view.
@@ -125,7 +143,7 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
             
             editedFriendIndex = (tableView.indexPathForSelectedRow?.row)!
             controller.mode = Mode.View
-            controller.friend = appDelegate.friends[editedFriendIndex]
+            controller.editedFriend = appDelegate.friends[editedFriendIndex]
         }
     }
 

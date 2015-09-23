@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FriendBooks/FriendListController.swift"
-            timestampString = "464609735.200073"
+            timestampString = "464675164.829886"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "55"
-            endingLineNumber = "55"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
             landmarkName = "addNewFriend(_:friend:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -25,13 +25,45 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FriendBooks/AppDelegate.swift"
-            timestampString = "464609905.642413"
+            filePath = "FriendBooks/FriendDetailController.swift"
+            timestampString = "464698915.459481"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
-            landmarkName = "applicationWillTerminate(_:)"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "saveEdit()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FriendBooks/FriendListController.swift"
+            timestampString = "464694935.089839"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
+            landmarkName = "prepareForSegue(_:sender:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FriendBooks/FriendDetailController.swift"
+            timestampString = "464693166.568354"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "addNewFriend()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

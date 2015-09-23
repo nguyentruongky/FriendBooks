@@ -27,11 +27,12 @@ class CoreDataHelper  {
         return delegate.managedObjectContext
     }
     
-    static func setValueForObject(person: NSManagedObject, name: String, phone: String, email: String) -> NSManagedObject{
+    static func setValueForObject(person: NSManagedObject, friend: Friend) -> NSManagedObject{
         
-        person.setValue(name, forKey: "name")
-        person.setValue(phone, forKey: "phone")
-        person.setValue(email, forKey: "email")
+        person.setValue(friend.friendID, forKey: "friendID")
+        person.setValue(friend.name, forKey: "name")
+        person.setValue(friend.phone, forKey: "phone")
+        person.setValue(friend.email, forKey: "email")
         
         return person
     }
@@ -65,6 +66,82 @@ class CoreDataHelper  {
         return friends
     }
     
+    static func updateFriendInfo(friend: Friend) {
+        
+        let managedContext = getContext()
+        
+        let fetchRequest = NSFetchRequest(entityName: "Friend")
+        
+        do {
+            
+            let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+            
+            if let results = fetchResults {
+                
+                for result in results {
+                    
+                    let id = result.valueForKey("friendID") as! Int
+                    
+                    if id == friend.friendID {
+                        
+                        setValueForObject(result, friend: friend)
+                        
+                        try managedContext.save()
+                        
+                        break
+                    }
+                }
+                
+            }
+        }
+        
+        catch {
+            
+            let nserror = error as NSError
+            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+
+
+    }
+    
+    static func removeFriend(friend: Friend) {
+        
+        let managedContext = getContext()
+        
+        let fetchRequest = NSFetchRequest(entityName: "Friend")
+        
+        do {
+            
+            let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
+            
+            if let results = fetchResults {
+                
+                for result in results {
+                    
+                    let id = result.valueForKey("friendID") as! Int
+                    
+                    if id == friend.friendID {
+                        
+                        managedContext.deleteObject(result)
+                        
+                        try managedContext.save()
+                        
+                        break
+                    }
+                }
+                
+            }
+        }
+            
+        catch {
+            
+            let nserror = error as NSError
+            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+        }
+        
+
+    }
+    
     static func addNewFriends(friends: [Friend]) {
         
         let managedContext = getContext()
@@ -72,7 +149,8 @@ class CoreDataHelper  {
         for friend in friends {
             
             let friendFromCoreData = getEntity(managedContext)
-            setValueForObject(friendFromCoreData, name: friend.name, phone: friend.phone, email: friend.email)
+            
+            setValueForObject(friendFromCoreData, friend: friend)
             
             do {
                 
@@ -94,6 +172,7 @@ class CoreDataHelper  {
         for friendCD in friendsCD {
             
             let friend = Friend()
+            friend.friendID = (friendCD.valueForKey("friendID") as? Int)!
             friend.name = (friendCD.valueForKey("name") as? String)!
             friend.email = (friendCD.valueForKey("email") as? String)!
             friend.phone = (friendCD.valueForKey("phone") as? String)!

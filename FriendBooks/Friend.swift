@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import CoreData
 
-class Friend {
+class Friend: NSManagedObject {
     
     var friendID = 0
     
@@ -18,6 +19,18 @@ class Friend {
     
     var avatar = ""
     var cover = ""
+
     
-    
+//    @NSManaged var friendID: Int
+//    
+//    @NSManaged var name: String
+//    
+//    @NSManaged var email: String
+//    
+//    @NSManaged var phone: String
+//    
+//    @NSManaged var avatar: String
+//    
+//    @NSManaged var cover: String
+
 }

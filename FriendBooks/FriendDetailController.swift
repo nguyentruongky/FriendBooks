@@ -17,7 +17,10 @@ protocol FriendDetailDelegate : class {
 
 class FriendDetailController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    var friend: Friend?
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+
+    
+    var editedFriend: Friend?
     var mode: Mode = Mode.View
     var changeAvatar = false
     var changeCover = false
@@ -57,27 +60,26 @@ class FriendDetailController: UITableViewController, UIImagePickerControllerDele
     
     func addNewFriend() {
         
-        let friend = saveFriendInfo()
-        
+        let friend = Friend()
+        friend.friendID = appDelegate.lastestID
+        appDelegate.lastestID++
+        saveFriendInfo(friend)
+
         delegate?.addNewFriend(self, friend: friend)
     }
 
     func saveEdit() {
         
-        let friend = saveFriendInfo()
+        saveFriendInfo(editedFriend!)
     
-        delegate?.saveEdit(self, friend: friend)
+        delegate?.saveEdit(self, friend: editedFriend!)
     }
 
-    func saveFriendInfo() -> Friend{
-        
-        let friend = Friend()
+    func saveFriendInfo(friend: Friend) {
         
         friend.name = friendName.text!
         friend.phone = phone.text!
         friend.email = email.text!
-        
-        return friend
     }
     
     func edit() {
@@ -93,12 +95,12 @@ class FriendDetailController: UITableViewController, UIImagePickerControllerDele
 
     func fetchDataToUI() {
         
-        friendName.text = friend?.name
+        friendName.text = editedFriend?.name
         
 //        avatar.image = UIImage(named: (friend?.avatar)!)
 //        cover.image = UIImage(named: (friend?.cover)!)
-        email.text = friend?.email
-        phone.text = friend?.phone
+        email.text = editedFriend?.email
+        phone.text = editedFriend?.phone
     }
     
     func decorateAvatar() {
