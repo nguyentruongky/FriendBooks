@@ -67,7 +67,6 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
         
 //        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: appDelegate.friends.count, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
         
-        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func update(controller: FriendDetailController, friend: Friend) {
@@ -75,8 +74,6 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
         appDelegate.friends[editedFriendIndex] = friend
 
         tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: editedFriendIndex, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
-        
-        dismissViewControllerAnimated(true, completion: nil)
 
         db.updateFriend(friend, atIndex: editedFriendIndex)
         
@@ -113,9 +110,7 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
 
     func findTargetController(segue: UIStoryboardSegue) -> FriendDetailController {
         
-        let navigationController = segue.destinationViewController as! UINavigationController
-        
-        let controller = navigationController.topViewController as! FriendDetailController
+        let controller = segue.destinationViewController as! FriendDetailController
         
         controller.delegate = self
         

@@ -50,11 +50,13 @@ class FriendDetailController: UITableViewController, UIImagePickerControllerDele
             
             self.addNewFriend()
         }
+        
+        navigationController?.popViewControllerAnimated(true)
     }
     
     @IBAction func back(sender: AnyObject) {
         
-        dismissViewControllerAnimated(true, completion: nil)
+        navigationController?.popViewControllerAnimated(true)
     }
 
     override func viewDidLoad() {

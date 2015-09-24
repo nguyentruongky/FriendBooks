@@ -30,7 +30,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="2NF-5b-SDV" kind="show" identifier="ViewFriend" id="ZMM-E6-GCB"/>
+                                    <segue destination="u3J-Px-WxF" kind="show" identifier="ViewFriend" id="BnE-cS-ura"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -42,7 +42,7 @@
                     <navigationItem key="navigationItem" title="Friend Book" id="z9c-y1-dNX">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Bvu-gV-tpA">
                             <connections>
-                                <segue destination="2NF-5b-SDV" kind="show" identifier="AddFriend" id="6pr-VJ-QNO"/>
+                                <segue destination="u3J-Px-WxF" kind="show" identifier="AddFriend" id="Jt5-Y4-eFS"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -270,7 +270,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="THC-9r-7BF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1665" y="544"/>
+            <point key="canvasLocation" x="1179" y="544"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="iKK-iI-AvK">
@@ -291,30 +291,11 @@
             </objects>
             <point key="canvasLocation" x="214" y="544"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="6aV-oV-hPS">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2NF-5b-SDV" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="vz5-DM-nem">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="u3J-Px-WxF" kind="relationship" relationship="rootViewController" id="6Hv-tl-prI"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XHA-FS-VqN" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1183" y="544"/>
-        </scene>
     </scenes>
     <resources>
         <image name="cover1" width="500" height="332"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZMM-E6-GCB"/>
+        <segue reference="BnE-cS-ura"/>
     </inferredMetricsTieBreakers>
 </document>
