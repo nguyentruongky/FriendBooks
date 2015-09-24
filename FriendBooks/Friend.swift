@@ -17,8 +17,8 @@ class Friend: NSManagedObject {
     var email = ""
     var phone = ""
     
-    var avatar = ""
-    var cover = ""
+    var avatar: NSData?
+    var cover: NSData?
 
     
 //    @NSManaged var friendID: Int

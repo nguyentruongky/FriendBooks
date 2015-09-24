@@ -11,17 +11,16 @@ import UIKit
 protocol FriendDetailDelegate : class {
     
     func addNewFriend(controller: FriendDetailController, friend: Friend)
-    func saveEdit(controller: FriendDetailController, friend: Friend)
+    func update(controller: FriendDetailController, friend: Friend)
     
 }
 
-class FriendDetailController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class FriendDetailController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
 
-    
     var editedFriend: Friend?
-    var mode: Mode = Mode.View
+
     var changeAvatar = false
     var changeCover = false
     
@@ -38,54 +37,19 @@ class FriendDetailController: UITableViewController, UIImagePickerControllerDele
     @IBOutlet weak var phone: UITextField!
     
     @IBOutlet weak var avatarContainer: UIView!
+
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
-    
-    @IBOutlet weak var editSaveButton: UIBarButtonItem!
-    
-    @IBAction func editSave(sender: AnyObject) {
+    @IBAction func save(sender: AnyObject) {
         
-        switch mode {
+        if editedFriend != nil {
             
-        case Mode.Add:
-            addNewFriend()
-            
-        case Mode.Edit:
-            saveEdit()
-            
-        default: // View
-            edit()
-            
+            update()
         }
-    }
-    
-    func addNewFriend() {
-        
-        let friend = Friend()
-        friend.friendID = appDelegate.lastestID
-        appDelegate.lastestID++
-        saveFriendInfo(friend)
-
-        delegate?.addNewFriend(self, friend: friend)
-    }
-
-    func saveEdit() {
-        
-        saveFriendInfo(editedFriend!)
-    
-        delegate?.saveEdit(self, friend: editedFriend!)
-    }
-
-    func saveFriendInfo(friend: Friend) {
-        
-        friend.name = friendName.text!
-        friend.phone = phone.text!
-        friend.email = email.text!
-    }
-    
-    func edit() {
-        
-        mode = Mode.Edit
-        switchMode()
+        else {
+            
+            self.addNewFriend()
+        }
     }
     
     @IBAction func back(sender: AnyObject) {
@@ -93,14 +57,48 @@ class FriendDetailController: UITableViewController, UIImagePickerControllerDele
         dismissViewControllerAnimated(true, completion: nil)
     }
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        prepareUI()
+        
+        prepareEvent()
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        
+    }
+
+    func prepareUI() {
+        
+        if editedFriend != nil {
+            
+            fetchDataToUI()
+        }
+        else {
+            
+            friendName.becomeFirstResponder()
+        }
+        
+        decorateAvatar()
+    }
+
     func fetchDataToUI() {
         
         friendName.text = editedFriend?.name
-        
-//        avatar.image = UIImage(named: (friend?.avatar)!)
-//        cover.image = UIImage(named: (friend?.cover)!)
         email.text = editedFriend?.email
         phone.text = editedFriend?.phone
+        
+        if let avatarData = editedFriend?.avatar {
+            
+            avatar.image = UIImage(data: avatarData)
+        }
+        
+        if let coverData = editedFriend?.cover {
+            
+            cover.image = UIImage(data: coverData)
+        }
     }
     
     func decorateAvatar() {
@@ -111,57 +109,54 @@ class FriendDetailController: UITableViewController, UIImagePickerControllerDele
         avatarContainer.clipsToBounds = true
     }
     
-    
-    func switchMode() {
-        
-        switch mode {
-            
-        case Mode.Add, Mode.Edit:
-            phone.enabled = true
-            email.enabled = true
-            friendName.enabled = true
-            
-            friendName.becomeFirstResponder()
-            
-            editSaveButton.title = "Save"
-
-        default:
-            email.enabled = false
-            phone.enabled = false
-            friendName.enabled = false
-            
-            editSaveButton.title = "Edit"
-        
-        }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if mode == Mode.View {
-            
-            fetchDataToUI()
-        }
-        
-        decorateAvatar()
-        
-        switchMode()
+    func prepareEvent() {
         
         registerAvatarTap()
         
         registerCoverTap()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-
-    }
-
-    func registerImageTap(imageView: UIImageView, funcName: String) {
+    
+    func addNewFriend() {
         
-        imageView.userInteractionEnabled = true
-        imageView.addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: Selector(funcName)))
+        let friend = saveNewFriendInfo()
+        
+        delegate?.addNewFriend(self, friend: friend)
+    }
+    
+    func saveNewFriendInfo() -> Friend {
+        
+        let friend = Friend()
+        
+        friend.friendID = appDelegate.lastestID
+        appDelegate.lastestID++
+        
+        saveFriendInfo(friend)
+        
+        return friend
+    }
+    
+    func update() {
+        
+        saveFriendInfo(editedFriend!)
+        
+        delegate?.update(self, friend: editedFriend!)
+    }
+    
+    func saveFriendInfo(friend: Friend) {
+        
+        friend.name = friendName.text!
+        friend.phone = phone.text!
+        friend.email = email.text!
+        
+        if let image = avatar.image {
+            
+            friend.avatar = UIImageJPEGRepresentation(image, 1)
+        }
+        
+        if let image = cover.image {
+            
+            friend.cover = UIImageJPEGRepresentation(image, 1)
+        }
     }
     
     func registerCoverTap() {
@@ -169,9 +164,28 @@ class FriendDetailController: UITableViewController, UIImagePickerControllerDele
         registerImageTap(cover, funcName: "pickCover")
     }
     
+    func pickCover() {
+        
+        showImagePicker()
+        changeCover = true
+    }
+    
     func registerAvatarTap() {
         
         registerImageTap(avatar, funcName: "pickAvatar")
+    }
+
+    func pickAvatar() {
+        
+        showImagePicker()
+        changeAvatar = true
+    }
+    
+    func registerImageTap(imageView: UIImageView, funcName: String) {
+        
+        imageView.userInteractionEnabled = true
+        imageView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: Selector(funcName)))
     }
     
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
@@ -192,35 +206,15 @@ class FriendDetailController: UITableViewController, UIImagePickerControllerDele
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func pickCover() {
-        
-        showImagePicker()
-        changeCover = true
-    }
-    
-    func pickAvatar() {
-        
-        showImagePicker()
-        changeAvatar = true
-    }
-    
     func showImagePicker() {
         
         let imagePicker = UIImagePickerController()
+        
         imagePicker.delegate = self
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .PhotoLibrary
+        
         presentViewController(imagePicker, animated: true, completion: nil)
     }
 
 }
-
-enum Mode {
-    
-    case View
-    
-    case Edit
-
-    case Add
-}
-

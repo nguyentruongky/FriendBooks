@@ -53,7 +53,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r4O-5m-aNW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="804" y="544"/>
+            <point key="canvasLocation" x="700" y="544"/>
         </scene>
         <!--Friend Name-->
         <scene sceneID="LU7-h3-qfT">
@@ -137,7 +137,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TmP-1v-xtF">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TmP-1v-xtF">
                                                     <rect key="frame" x="62" y="38" width="242" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <textInputTraits key="textInputTraits"/>
@@ -178,10 +178,10 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="someone@example.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hrz-aj-ZUW">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="someone@example.com" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hrz-aj-ZUW">
                                                     <rect key="frame" x="59" y="38" width="245" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -219,10 +219,10 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0xx-xxx-xxxx" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="U1Z-3C-Zty">
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0xx-xxx-xxxx" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="U1Z-3C-Zty">
                                                     <rect key="frame" x="65" y="38" width="239" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -253,7 +253,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Save" id="69M-Ju-MJ0">
                             <connections>
-                                <action selector="editSave:" destination="u3J-Px-WxF" id="ifI-7B-r8q"/>
+                                <action selector="save:" destination="u3J-Px-WxF" id="Q3B-xg-cEd"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -262,10 +262,10 @@
                         <outlet property="avatar" destination="kPA-po-xcT" id="hQm-hF-eGW"/>
                         <outlet property="avatarContainer" destination="bI8-Bh-Xdx" id="0H4-0S-gtb"/>
                         <outlet property="cover" destination="Nhh-ex-NJR" id="4pq-OK-J0k"/>
-                        <outlet property="editSaveButton" destination="69M-Ju-MJ0" id="XDC-zK-KAf"/>
                         <outlet property="email" destination="hrz-aj-ZUW" id="lUA-o6-4iJ"/>
                         <outlet property="friendName" destination="TmP-1v-xtF" id="Yav-1s-fbg"/>
                         <outlet property="phone" destination="U1Z-3C-Zty" id="l6U-is-GfC"/>
+                        <outlet property="saveButton" destination="69M-Ju-MJ0" id="ar7-2s-sge"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="THC-9r-7BF" userLabel="First Responder" sceneMemberID="firstResponder"/>

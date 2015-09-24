@@ -10,7 +10,8 @@ import UIKit
 
 class FriendListController: UITableViewController, FriendDetailDelegate {
 
-//    var friends = [Friend]()
+    var db = CoreDataHelper()
+    
     let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     var editedFriendIndex = -1
@@ -20,7 +21,7 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        appDelegate.friends = CoreDataHelper.getFriendsFromCoreData()
+        appDelegate.friends = db.getFriendsFromDB()
         
         if appDelegate.friends.count == 0 {
             
@@ -38,8 +39,6 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
 
     }
 
-    // MARK: - Table view data source
-
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
 
         return 1
@@ -49,7 +48,6 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
 
         return appDelegate.friends.count
     }
-
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(StringResources.FriendCell, forIndexPath: indexPath)
@@ -65,13 +63,14 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
         
         tableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
         
-        CoreDataHelper.addNewFriends([friend])
+        db.addNewFriends([friend])
+        
 //        tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: appDelegate.friends.count, inSection: 0)], withRowAnimation: UITableViewRowAnimation.Automatic)
         
         dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func saveEdit(controller: FriendDetailController, friend: Friend) {
+    func update(controller: FriendDetailController, friend: Friend) {
         
         appDelegate.friends[editedFriendIndex] = friend
 
@@ -79,70 +78,35 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
         
         dismissViewControllerAnimated(true, completion: nil)
 
-        CoreDataHelper.updateFriendInfo(friend)
+        db.updateFriend(friend, atIndex: editedFriendIndex)
         
         editedFriendIndex = -1
     }
 
-    func getFriends() {
-        
-        
-    }
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-
-    // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
         if editingStyle == .Delete {
-            
+        
             let friend = appDelegate.friends[indexPath.row]
-            CoreDataHelper.removeFriend(friend)
-
+            db.removeFriend(friend, atIndex: indexPath.row)
+            
             appDelegate.friends.removeAtIndex(indexPath.row)
+
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
-//        else if editingStyle == .Insert {
-//            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-//        }    
     }
 
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-    
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
         let controller = findTargetController(segue)
         
         if segue.identifier == StringResources.AddFriend {
-            
-            controller.mode = Mode.Add
+        
         }
         else if segue.identifier == StringResources.ViewFriend {
             
             editedFriendIndex = (tableView.indexPathForSelectedRow?.row)!
-            controller.mode = Mode.View
+
             controller.editedFriend = appDelegate.friends[editedFriendIndex]
         }
     }
@@ -157,6 +121,4 @@ class FriendListController: UITableViewController, FriendDetailDelegate {
         
         return controller
     }
-
-
 }

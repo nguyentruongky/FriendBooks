@@ -12,48 +12,22 @@ import CoreData
 
 class CoreDataHelper  {
     
-    private static func getEntity(managedContext: NSManagedObjectContext) -> NSManagedObject  {
-        
-        
-        let entity = NSEntityDescription.entityForName("Friend", inManagedObjectContext: managedContext)
-        
-        return NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
-        
-    }
+    private var managedContext: NSManagedObjectContext
     
-    private static func getContext() -> NSManagedObjectContext {
+    init() {
         
         let delegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        return delegate.managedObjectContext
-    }
-    
-    static func setValueForObject(person: NSManagedObject, friend: Friend) -> NSManagedObject{
-        
-        person.setValue(friend.friendID, forKey: "friendID")
-        person.setValue(friend.name, forKey: "name")
-        person.setValue(friend.phone, forKey: "phone")
-        person.setValue(friend.email, forKey: "email")
-        
-        return person
+
+        self.managedContext = delegate.managedObjectContext
     }
 
-    
-    static func getFriendsFromCoreData() -> [Friend] {
-        
-        let managedContext = getContext()
-        
-        var friendsCD = [NSManagedObject]()
+    private func getFriends() -> [NSManagedObject]? {
         
         let fetchRequest = NSFetchRequest(entityName: "Friend")
         
         do {
             
-            let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
-            
-            if let results = fetchResults {
-                
-                friendsCD = results
-            }
+            return try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
         }
         catch {
             
@@ -61,90 +35,72 @@ class CoreDataHelper  {
             NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
         }
         
-        let friends = parseFriendCoreDataToFriend(friendsCD)
-        
-        return friends
+        return nil
     }
     
-    static func updateFriendInfo(friend: Friend) {
+    func getFriendsFromDB() -> [Friend] {
         
-        let managedContext = getContext()
+        let friendsCD = getFriends()
         
-        let fetchRequest = NSFetchRequest(entityName: "Friend")
-        
-        do {
+        if let unwrappedFriends = friendsCD {
             
-            let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
-            
-            if let results = fetchResults {
-                
-                for result in results {
-                    
-                    let id = result.valueForKey("friendID") as! Int
-                    
-                    if id == friend.friendID {
-                        
-                        setValueForObject(result, friend: friend)
-                        
-                        try managedContext.save()
-                        
-                        break
-                    }
-                }
-                
-            }
+            return parseFriendCoreDataToFriend(unwrappedFriends)
         }
         
-        catch {
+        return [Friend]()
+    }
+    
+    func updateFriend(friend: Friend, atIndex index: Int) {
+        
+        let friendsCD = getFriends()
+        
+        if let unwrappedFriends = friendsCD {
             
-            let nserror = error as NSError
-            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
+            let updatedFriend = unwrappedFriends[index]
+            
+            updateFriend(updatedFriend, friendNewInfo: friend)
         }
-
+        
+    }
+    
+    private func updateFriend(updatedFriend: NSManagedObject, friendNewInfo friend: Friend) {
+        
+//        let id = updatedFriend.valueForKey("friendID") as! Int
+//        
+//        if id == friend.friendID {
+        
+            setValueForObject(updatedFriend, friend: friend)
+            
+            saveContext()
+//        }
 
     }
     
-    static func removeFriend(friend: Friend) {
+    func removeFriend(friend: Friend, atIndex index: Int) {
         
-        let managedContext = getContext()
+        let friendsCD = getFriends()
         
-        let fetchRequest = NSFetchRequest(entityName: "Friend")
-        
-        do {
+        if let unwrappedFriends = friendsCD {
             
-            let fetchResults = try managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
-            
-            if let results = fetchResults {
-                
-                for result in results {
-                    
-                    let id = result.valueForKey("friendID") as! Int
-                    
-                    if id == friend.friendID {
-                        
-                        managedContext.deleteObject(result)
-                        
-                        try managedContext.save()
-                        
-                        break
-                    }
-                }
-                
-            }
+            let removedFriend = unwrappedFriends[index]
+        
+            removeFriend(removedFriend)
         }
-            
-        catch {
-            
-            let nserror = error as NSError
-            NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
-        }
-        
-
     }
     
-    static func addNewFriends(friends: [Friend]) {
+    private func removeFriend(removedFriend: NSManagedObject) {
         
-        let managedContext = getContext()
+//        let id = removedFriend.valueForKey("friendID") as! Int
+//        
+//        if id == friend.friendID {
+//            
+            managedContext.deleteObject(removedFriend)
+            
+            saveContext()
+//        }
+    }
+    
+    func addNewFriends(friends: [Friend]) {
         
         for friend in friends {
             
@@ -152,35 +108,59 @@ class CoreDataHelper  {
             
             setValueForObject(friendFromCoreData, friend: friend)
             
-            do {
-                
-                try managedContext.save()
-            }
-            catch {
-                
-                let nserror = error as NSError
-                NSLog("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-
+            saveContext()
         }
     }
     
-    private static func parseFriendCoreDataToFriend(friendsCD: [NSManagedObject]) -> [Friend] {
+    private func getEntity(managedContext: NSManagedObjectContext) -> NSManagedObject  {
+        
+        let entity = NSEntityDescription.entityForName("Friend", inManagedObjectContext: managedContext)
+        
+        return NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+        
+    }
+    
+    private  func parseFriendCoreDataToFriend(friendsCD: [NSManagedObject]) -> [Friend] {
         
         var friends = [Friend]()
         
         for friendCD in friendsCD {
             
             let friend = Friend()
+            
             friend.friendID = (friendCD.valueForKey("friendID") as? Int)!
             friend.name = (friendCD.valueForKey("name") as? String)!
             friend.email = (friendCD.valueForKey("email") as? String)!
             friend.phone = (friendCD.valueForKey("phone") as? String)!
+            friend.avatar = (friendCD.valueForKey("avatar") as? NSData)
+            friend.cover = (friendCD.valueForKey("cover") as? NSData)
             
             friends.append(friend)
         }
         
         return friends
+    }
+    
+    // set friend model data to friend entity
+    func setValueForObject(person: NSManagedObject, friend: Friend) -> NSManagedObject{
+        
+        person.setValue(friend.friendID, forKey: "friendID")
+        person.setValue(friend.name, forKey: "name")
+        person.setValue(friend.phone, forKey: "phone")
+        person.setValue(friend.email, forKey: "email")
+        person.setValue(friend.avatar, forKey: "avatar")
+        person.setValue(friend.cover, forKey: "cover")
+        
+        return person
+    }
+    
+    private func saveContext() {
+        
+        do  {
+            
+            try managedContext.save()
+        }
+        catch {}
     }
 }
 
